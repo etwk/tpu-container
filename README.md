@@ -6,7 +6,7 @@ Integrate these:
  - Machine Learning frameworks, such as TensorFlow
 
 ## Notes
-Doesn't work with Docker, use Podman.
+**Doesn't work with Docker, use Podman.**
 
 Because some container applications use a regular user (instead of the root user) to run applications, we can't get this user in container access to TPU devices in TPU VM, not yet.
 
@@ -30,7 +30,7 @@ Here we use "/data" as the main folder:
   - Jupyter Notebook work dir: `/data/work` -> `/home/jovyan/work`
   - Jupyter Notebook configs: `/data/.jupyter` -> `/home/jovyan/.jupyter`
 
-* 'jovyan' is the application user in containers from Jupyter, its user id is 1000.
+> 'jovyan' is the application user in containers from Jupyter, its user id is 1000
 
 ```bash
 podman unshare chown -R 1000:1000 /data
