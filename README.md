@@ -1,6 +1,6 @@
 # TPU Container
 ## General
-Integrate these:
+Integrate:
  - Google TPU in TPU VM
  - Container applications, such as Jupter Notebook
  - Machine Learning frameworks, such as TensorFlow
@@ -36,8 +36,7 @@ Here we use "/data" as the main folder:
 podman unshare chown -R 1000:1000 /data
 ```
 
-### Step 5
-Run container:
+### Step 5: run container
 ```bash
 podman run -it -p $EXTERNAL_PORT:8888 \
   -v /data/work:/home/jovyan/work:Z \
@@ -59,7 +58,7 @@ You may use `jupyter server password` to add a password to the config file `.jup
 - [ ] Support for other machine learning frameworks such as PyTorch, JAX, etc.
 - [ ] Choose and add support for different versions: Python, ML frameworks, and applications.
 - [ ] Add support for more useful container applications
-- [ ] Publish ready-to-run container images
+- [ ] Publish ready-to-run container images, maybe use Github workflows
 - [ ] Script for generating Dockerfile
 - [ ] Evaluate support for TPU pod.
 
