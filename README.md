@@ -11,29 +11,24 @@ Doesn't work with Docker, use Podman.
 Because some container applications use a regular user (instead of the root user) to run applications, we can't get this user in container access to TPU devices in TPU VM, not yet.
 
 ## Install
-### Step 1
-Select:
-    - TensorFlow version: 2.7.3 to 2.14.0 at time of writing (https://cloud.google.com/tpu/docs/supported-tpu-configurations#tpu_vm_with_tpu_v4)
-    - Container application: for example Jupyer Notebook have multiple setup available (https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html)
-        - Choose one version that have Python version matches with chosen TensorFlow version
+### Step 1: select
+- TensorFlow version: 2.7.3 to 2.14.0 at time of writing (https://cloud.google.com/tpu/docs/supported-tpu-configurations#tpu_vm_with_tpu_v4)
+- Container application: for example, Jupyer Notebook has multiple setups available (https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html)
+  - Choose one version that uses Python version matches with chosen TensorFlow version
 
-### Step 2
-Update the Dockerfile:
-    - TensorFlow, libtpu.so (links listed here: https://cloud.google.com/tpu/docs/supported-tpu-configurations#tpu_vm_with_tpu_v4)
-    - Container base image
+### Step 2: update Dockerfile
+- TensorFlow, libtpu.so (links listed here: https://cloud.google.com/tpu/docs/supported-tpu-configurations#tpu_vm_with_tpu_v4)
+- Container base image
 
-### Step 3
-Build image:
+### Step 3: build image
 ```bash
 # add "--format=docker" for jupyter/scipy-notebook
 podman build --format=docker -t "$IMAGE_NAME" ./
 ```
-### Step 4
-Prepare data volumes.
-
+### Step 4: prepare container volumes
 Here we use "/data" as the main folder:
-    - Jupyter Notebook work dir: '/data/work' -> '/home/jovyan/work'
-    - Jupyter Notebook configs: '/data/.jupyter' -> '/home/jovyan/.jupyter'
+  - Jupyter Notebook work dir: `/data/work` -> `/home/jovyan/work`
+  - Jupyter Notebook configs: `/data/.jupyter` -> `/home/jovyan/.jupyter`
 
 * 'jovyan' is the application user in containers from Jupyter, its user id is 1000.
 
@@ -55,14 +50,14 @@ podman run -it -p $EXTERNAL_PORT:8888 \
 
 ## Tips
 
-You may use `jupyter server password` to add a password to the config file '.jupyter/jupyter_server_config.json'.
+You may use `jupyter server password` to add a password to the config file `.jupyter/jupyter_server_config.json`.
 
 ## Todo
 ### Features
 - [ ] Reduce image size
 - [ ] Smooth deploy: podman compose, auto start after host reboot
 - [ ] Support for other machine learning frameworks such as PyTorch, JAX, etc.
-- [ ] Choose and add support for different versions: Python, ML frameworks, applications.
+- [ ] Choose and add support for different versions: Python, ML frameworks, and applications.
 - [ ] Add support for more useful container applications
 - [ ] Publish ready-to-run container images
 - [ ] Script for generating Dockerfile
