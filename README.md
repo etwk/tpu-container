@@ -10,22 +10,24 @@ Integrate:
 
 Because some container applications use a regular user (instead of the root user) to run applications, we can't get this user in container access to TPU devices in TPU VM, not yet.
 
-## Install
-### Step 1: select
+## [Knowledge Base](kb.md)
+
+## Setup
+### step 1: select
 - TensorFlow version: 2.7.3 to 2.14.0 at time of writing (https://cloud.google.com/tpu/docs/supported-tpu-configurations#tpu_vm_with_tpu_v4)
 - Container application: for example, Jupyer Notebook has multiple setups available (https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html)
   - Choose one version that uses Python version matches with chosen TensorFlow version
 
-### Step 2: update Dockerfile
+### step 2: update Dockerfile
 - TensorFlow, libtpu.so (links listed here: https://cloud.google.com/tpu/docs/supported-tpu-configurations#tpu_vm_with_tpu_v4)
 - Container base image
 
-### Step 3: build image
+### step 3: build image
 ```bash
 # add "--format=docker" for jupyter/scipy-notebook
 podman build --format=docker -t "$IMAGE_NAME" ./
 ```
-### Step 4: prepare container volumes
+### step 4: prepare container volumes
 Here we use "/data" as the main folder:
   - Jupyter Notebook work dir: `/data/work` -> `/home/jovyan/work`
   - Jupyter Notebook configs: `/data/.jupyter` -> `/home/jovyan/.jupyter`
@@ -36,7 +38,7 @@ Here we use "/data" as the main folder:
 podman unshare chown -R 1000:1000 /data
 ```
 
-### Step 5: run container
+### step 5: run container
 ```bash
 podman run -it -p $EXTERNAL_PORT:8888 \
   -v /data/work:/home/jovyan/work:Z \
@@ -54,12 +56,13 @@ You may use `jupyter server password` to add a password to the config file `.jup
 ## Todo
 ### Features
 - [ ] Reduce image size
-- [ ] Smooth deploy: podman compose, auto start after host reboot
 - [ ] Support for other machine learning frameworks such as PyTorch, JAX, etc.
-- [ ] Choose and add support for different versions: Python, ML frameworks, and applications.
-- [ ] Add support for more useful container applications
-- [ ] Publish ready-to-run container images, maybe use Github workflows
+- [ ] Test automatically.
+- [ ] Evaluate and add support for different versions: Python, ML frameworks, and applications.
 - [ ] Script for generating Dockerfile
+- [ ] Smooth deploy: podman compose, auto start after host reboot
+- [ ] Publish ready-to-run container images, maybe use Github workflows
+- [ ] Add support for more useful container applications
 - [ ] Evaluate support for TPU pod.
 
 ### Issues
