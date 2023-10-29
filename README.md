@@ -40,12 +40,14 @@ podman unshare chown -R 1000:1000 /data
 
 ### step 5: run container
 ```bash
+# add the 4 TPU devices in TPU VM, more secure than --privileged
+# grant notebook application user sudo access so that we can install system packages in notebook
+# generate certificates and enable htpps access
 podman run -it -p $EXTERNAL_PORT:8888 \
-  -v /data/work:/home/jovyan/work:Z \
-  -v /data/.jupyter:/home/jovyan/.jupyter:Z \
-  --device=/dev/accel{0..3} \  # add the 4 TPU devices in TPU VM, more secure than --privileged
-  --user root -e GRANT_SUDO=yes \  # grant notebook application user sudo access so that we can install system packages in notebook
-  -e GEN_CERT=yes \  # generate certificates and enable htpps access
+  -v $HOME/work:/home/jovyan/work:Z \
+  -v $HOME/.jupyter:/home/jovyan/.jupyter:Z \
+  --device=/dev/accel{0..3} --shm-size=8G \
+  --user root -e GRANT_SUDO=yes -e GEN_CERT=yes \
   --name $CONTAINER_NAME localhost/$IMAGE_NAME
 ```
 
@@ -72,5 +74,6 @@ You may use `jupyter server password` to add a password to the config file `.jup
 - docker-stacks from Jupyter: https://github.com/jupyter/docker-stacks
 - gpu-jupyter: https://github.com/iot-salzburg/gpu-jupyter
 
-## Thanks
+## Acknowledgements
 - Thanks to the TPU Research Cloud team at Google for providing TPU resources and support!
+- Special thanks to Tolun Çerkeş for his invaluable support. Tolun is an archaeologist offering tours in Turkey and is passionate about vegetarianism. If you're planning a visit to Turkey and are interested in guided tours, consider checking out his website: https://privatetourturkey.com
