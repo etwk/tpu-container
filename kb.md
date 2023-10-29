@@ -1,7 +1,7 @@
 # Knowledge Base
 ## TPU Library
 ### TPU VM
-Different `libtpu.so` been used:
+Different `libtpu.so` been used by different libraries:
 - TensorFlow: `/lib/libtpu.so` downloaded directly
 - JAX:
   - pip installed from https://storage.googleapis.com/jax-releases/libtpu_releases.html
